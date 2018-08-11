@@ -1,13 +1,21 @@
-const express = require('express');
-const mongoose = require('mongoose');
+import dotenv from 'dotenv';
+import express from 'express';
+import mongoose from 'mongoose';
+import Report from '../models/report';
+
+dotenv.config();
 
 const router = express.Router();
 const { DB_HOST, DB_NAME } = process.env;
-const Report = require('../models/report');
 
 mongoose.connect(`mongodb://${DB_HOST}/${DB_NAME}`);
 
 /* GET reports within 10 kms listing. */
+/**
+   * @param {number} lat - this is a value.
+   * @param {number} long - this is a value.
+   * @return {[reports]} result of the reports within 10 kms.
+   */
 router.get('/:lat/:long', async (req, res) => {
   const { lat, long } = req.params;
   const reports = await Report.find({
@@ -28,4 +36,7 @@ router.post('/', (req, res, next) => {
     .catch(err => next(err));
 });
 
-module.exports = router;
+/**
+ * this is Reports Controller.
+ */
+export default router;
