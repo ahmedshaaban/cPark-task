@@ -1,3 +1,5 @@
+import Report from './src/models/report';
+
 const mongoose = require('mongoose');
 
 require('dotenv').config();
@@ -5,8 +7,6 @@ require('dotenv').config();
 const { DB_HOST, DB_NAME } = process.env;
 
 mongoose.connect(`mongodb://${DB_HOST}/${DB_NAME}`);
-
-const Report = require('./models/report');
 
 const initReportArr = [
   {
