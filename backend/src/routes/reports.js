@@ -11,17 +11,16 @@ const { DB_HOST, DB_NAME } = process.env;
 mongoose.connect(`mongodb://${DB_HOST}/${DB_NAME}`);
 
 /* GET reports within 10 kms listing. */
-/**
-   * @param {number} lat - this is a value.
-   * @param {number} long - this is a value.
-   * @return {[reports]} result of the reports within 10 kms.
-   */
 router.get('/:lat/:long', async (req, res) => {
   const { lat, long } = req.params;
+  let { distance } = req.query;
+  distance = (distance && distance < 10) ? distance : 10;
+  // The equatorial radius of the Earth is approximately 3,963.2 miles or 6,378.1 kilometers.
+  distance /= 6378.1;
   const reports = await Report.find({
     coordinates: {
       $geoWithin: {
-        $center: [[lat, long], 10],
+        $centerSphere: [[lat, long], distance],
       },
     },
   });
@@ -36,7 +35,4 @@ router.post('/', (req, res, next) => {
     .catch(err => next(err));
 });
 
-/**
- * this is Reports Controller.
- */
 export default router;

@@ -11,7 +11,8 @@ class ReportList extends Component {
       reports: [],
       isLoading: true,
       lat: 0,
-      long: 0
+      long: 0,
+      distance: 10
     }
   }
 
@@ -24,6 +25,7 @@ class ReportList extends Component {
   handleInputChange (event) {
     const { target } = event
     const name = target.id
+    if (target.id === 'distance' && target.value > 10) { target.value = 10 }
 
     this.setState({
       [name]: target.value
@@ -33,7 +35,7 @@ class ReportList extends Component {
   handleSubmit (event) {
     event.preventDefault()
     this.setState({ isLoading: true })
-    fetch(`/report/${this.state.lat}/${this.state.long}`)
+    fetch(`/report/${this.state.lat}/${this.state.long}?distance=${this.state.distance}`)
       .then(response => response.json())
       .then(data => this.setState({ reports: data, isLoading: false }))
   }
@@ -71,13 +73,19 @@ class ReportList extends Component {
               <div className='form-group'>
                 <label>
                 lat:
-                  <input type='number' id='lat' value={this.state.lat} onChange={this.handleInputChange} />
+                  <input type='number' step='0.01' id='lat' value={this.state.lat} onChange={this.handleInputChange} required />
                 </label>
               </div>
               <div className='form-group'>
                 <label>
                 lng:
-                  <input type='number' id='long' value={this.state.long} onChange={this.handleInputChange} />
+                  <input type='number' step='0.01' id='long' value={this.state.long} onChange={this.handleInputChange} required />
+                </label>
+              </div>
+              <div className='form-group'>
+                <label>
+                distance:
+                  <input type='number' id='distance' value={this.state.distance} onChange={this.handleInputChange} required />
                 </label>
               </div>
               <input type='submit' value='Search' />
