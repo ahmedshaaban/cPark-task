@@ -11,24 +11,15 @@ const Report = require('./models/report');
 const initReportArr = [
   {
     title: 'madenity',
-    position: {
-      latitude: 30.08,
-      longitude: 31.62,
-    },
+    coordinates: [30.08, 31.62],
   },
   {
     title: 'auc',
-    position: {
-      latitude: 30.02,
-      longitude: 31.50,
-    },
+    coordinates: [30.02, 31.50],
   },
   {
     title: 'guc',
-    position: {
-      latitude: 29.98,
-      longitude: 31.44,
-    },
+    coordinates: [29.98, 31.44],
   },
 ];
 

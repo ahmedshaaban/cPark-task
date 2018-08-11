@@ -2,14 +2,15 @@ const mongoose = require('mongoose');
 
 const Report = mongoose.model('Report',
   {
-    title: String,
+    title: { type: String, required: true },
     time: { type: Date, default: Date.now },
-    position: {
-      latitude: {
-        type: Number,
-      },
-      longitude: {
-        type: Number,
+    coordinates: {
+      type: [Number],
+      required: true,
+      validate: {
+        validator(array) {
+          return array.every(v => typeof v === 'number') && array.length === 2;
+        },
       },
     },
   });
