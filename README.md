@@ -1,6 +1,16 @@
 VAI Task
 =============
 
+#### to run app via docker-compose:
+
+The base url is localhost:3000 
+
+1. open the docker-compose file and add your env in the environment section but leave the DB_HOST & PORT as it is
+2. `docker-compose build`
+3. `docker-compose up`
+
+----
+
 #### to run app native:
 
 ## Setup backend
@@ -22,14 +32,6 @@ The base url is localhost:3000
 3. `yarn install`
 4. `yarn start`
 ----
-
-#### to run app via docker-compose:
-
-The base url is localhost:3000 
-
-1. open the docker-compose file and add your env in the environment section but leave the DB_HOST & PORT as it is
-2. `docker-compose build`
-3. `docker-compose up`
 
 #### to test backend:
 
