@@ -15,17 +15,23 @@ mongoose.connect(`mongodb://${DB_HOST}/${DB_NAME}`);
 /* GET reports within 10 kms listing. */
 router.get('/:lat/:long', jwt.valid(), async (req, res) => {
   const { lat, long } = req.params;
-  let { distance } = req.query;
-  distance = (distance && distance < 10) ? distance : 10;
+  const { filter } = req.query;
+  // default filter value
+  let filterObj = {
+    time: -1
+  };
+  if (filter) {
+    filterObj = filter === 'time' ? { time: -1 } : { coordinates: -1 };
+  }
   // The equatorial radius of the Earth is approximately 3,963.2 miles or 6,378.1 kilometers.
-  distance /= 6378.1;
+  const distance = 10 / 6378.1;
   const reports = await Report.find({
     coordinates: {
       $geoWithin: {
         $centerSphere: [[lat, long], distance],
       },
     },
-  });
+  }).sort(filterObj);
   return res.send(reports);
 });
 

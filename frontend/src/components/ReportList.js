@@ -16,7 +16,7 @@ class ReportList extends Component {
       isLoading: true,
       lat: 30.04,
       long: 31.23,
-      distance: 10,
+      filter: 'distance',
       viewport: {
         width: 400,
         height: 400,
@@ -34,10 +34,11 @@ class ReportList extends Component {
   }
 
   handleInputChange (event) {
-    const { target } = event
+    let { target } = event
     const name = target.id
-    if (target.id === 'distance' && target.value > 10) { target.value = 10 }
-
+    if (name === 'filter') {
+      target.value = target.checked ? 'time' : 'distance'
+    }
     this.setState({
       [name]: target.value
     })
@@ -46,7 +47,7 @@ class ReportList extends Component {
   handleSubmit (event) {
     event.preventDefault()
     this.setState({ isLoading: true })
-    fetch(`/report/${this.state.lat}/${this.state.long}?distance=${this.state.distance}`, {
+    fetch(`/report/${this.state.lat}/${this.state.long}?filter=${this.state.filter}`, {
       headers: {
         'Authorization': `Bearer ${this.Auth.getToken()}`
       }
@@ -94,6 +95,7 @@ class ReportList extends Component {
           {' '}
           {report.coordinates[1]}
         </td>
+        <td>{report.time}</td>
       </tr>
     ))
 
@@ -123,8 +125,9 @@ class ReportList extends Component {
               </div>
               <div className='form-group'>
                 <label>
-                  distance:
-                  <input type='number' id='distance' value={this.state.distance} onChange={this.handleInputChange} required />
+                  filter:
+                  <input type='checkbox' id='filter' onChange={this.handleInputChange} />
+                  On -> date / Off -> distance
                 </label>
               </div>
               <input type='submit' value='Search' />
@@ -147,6 +150,9 @@ class ReportList extends Component {
                 </th>
                 <th width='20%'>
                   Coordinates
+                </th>
+                <th width='20%'>
+                  Date
                 </th>
               </tr>
             </thead>
