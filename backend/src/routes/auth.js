@@ -6,7 +6,7 @@ import Admin from '../models/admin';
 
 const router = express.Router();
 
-mongoose.connect(`mongodb://${process.env.DB_HOST}/vai-task`);
+mongoose.connect(`mongodb://${process.env.DB_HOST}/${process.env.DB_NAME}`);
 
 /* GET home page. */
 router.post('/', (req, res, next) => {

@@ -1,6 +1,4 @@
 import request from 'supertest';
-import mongoose from 'mongoose';
-import Admin from '../src/models/admin';
 import app from '../src/app';
 
 const { ADMIN_EMAIL, ADMIN_PW } = process.env;

@@ -17,9 +17,9 @@ describe('Test Reports', () => {
   });
 
   afterAll(() => {
-    // Report.remove({
-    //   title: /test/i,
-    // }).exec();
+    Report.remove({
+      title: /test/i,
+    }).exec();
     mongoose.disconnect();
   });
 

@@ -5,10 +5,12 @@ import {
 import { geolocated } from 'react-geolocated'
 import { Link } from 'react-router-dom'
 import withAuth from './withAuth'
+import AuthService from './AuthService'
 
 class ReportView extends Component {
   constructor (props) {
     super(props)
+    this.Auth = new AuthService()
     this.state = {
       title: ''
     }
@@ -33,11 +35,11 @@ class ReportView extends Component {
   handleSubmit (event) {
     event.preventDefault()
     this.setState({ isLoading: true })
-    console.log(this.state.title)
     fetch('/report', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json; charset=utf-8'
+        'Content-Type': 'application/json; charset=utf-8',
+        'Authorization': `Bearer ${this.Auth.getToken()}`
       },
       body: JSON.stringify({
         title: this.state.title,
