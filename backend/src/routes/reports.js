@@ -30,11 +30,13 @@ router.get('/:lat/:long', jwt.valid(), async (req, res) => {
 });
 
 /* POST a new report */
-router.post('/', (req, res, next) => {
+router.post('/', jwt.valid(), (req, res, next) => {
   const { title, time, coordinates } = req.body;
   Report.create({ title, time, coordinates })
     .then(report => res.send(report))
-    .catch(err => next(err));
+    .catch((err) => {
+      next(err);
+    });
 });
 
 export default router;
