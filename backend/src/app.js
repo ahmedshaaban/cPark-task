@@ -3,7 +3,10 @@ import express from 'express';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
+import jwt from 'jwt-express';
+
 import reportsRouter from './routes/reports';
+import authRouter from './routes/auth';
 
 const app = express();
 
@@ -15,8 +18,10 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(jwt.init(process.env.SECRET, { cookies: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/login', authRouter);
 app.use('/report', reportsRouter);
 
 // catch 404 and forward to error handler

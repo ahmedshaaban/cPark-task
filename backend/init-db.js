@@ -1,10 +1,14 @@
+import bcrypt from 'bcrypt';
 import Report from './src/models/report';
+import Admin from './src/models/admin';
 
 const mongoose = require('mongoose');
 
 require('dotenv').config();
 
-const { DB_HOST, DB_NAME } = process.env;
+const {
+  DB_HOST, DB_NAME, ADMIN_EMAIL, ADMIN_PW
+} = process.env;
 
 mongoose.connect(`mongodb://${DB_HOST}/${DB_NAME}`);
 
@@ -29,6 +33,7 @@ initReportArr.forEach((report) => {
   promiseArr.push(new Report(report).save());
 });
 
+promiseArr.push(new Admin({ email: ADMIN_EMAIL, password: bcrypt.hashSync(ADMIN_PW, 10) }).save());
 
 Promise.all(promiseArr).then(() => {
   console.log('Done init DB');

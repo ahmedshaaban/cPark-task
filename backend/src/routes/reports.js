@@ -1,6 +1,8 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import mongoose from 'mongoose';
+import jwt from 'jwt-express';
+
 import Report from '../models/report';
 
 dotenv.config();
@@ -11,7 +13,7 @@ const { DB_HOST, DB_NAME } = process.env;
 mongoose.connect(`mongodb://${DB_HOST}/${DB_NAME}`);
 
 /* GET reports within 10 kms listing. */
-router.get('/:lat/:long', async (req, res) => {
+router.get('/:lat/:long', jwt.valid(), async (req, res) => {
   const { lat, long } = req.params;
   let { distance } = req.query;
   distance = (distance && distance < 10) ? distance : 10;

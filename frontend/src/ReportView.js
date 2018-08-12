@@ -4,6 +4,7 @@ import {
 } from 'reactstrap'
 import { geolocated } from 'react-geolocated'
 import { Link } from 'react-router-dom'
+import withAuth from './withAuth'
 
 class ReportView extends Component {
   constructor (props) {
@@ -96,7 +97,7 @@ class ReportView extends Component {
                       <input type='number' id='long' value={this.props.coords.longitude} onChange={this.handleInputChange} disabled />
                     </label>
                   </div>
-                  <input type='submit' value='Search' />
+                  <input type='submit' value='Add' />
                 </form>
               </div>
             </Container>
@@ -111,9 +112,9 @@ class ReportView extends Component {
   }
 }
 
-export default geolocated({
+export default withAuth(geolocated({
   positionOptions: {
     enableHighAccuracy: false
   },
   userDecisionTimeout: 5000
-})(ReportView)
+})(ReportView))

@@ -3,10 +3,13 @@ import {
   Button, Container, Table
 } from 'reactstrap'
 import { Link } from 'react-router-dom'
+import withAuth from './withAuth'
+import AuthService from './AuthService'
 
 class ReportList extends Component {
   constructor (props) {
     super(props)
+    this.Auth = new AuthService()
     this.state = {
       reports: [],
       isLoading: true,
@@ -17,6 +20,7 @@ class ReportList extends Component {
   }
 
   componentDidMount () {
+    console.log(this.state.jwt)
     this.setState({ isLoading: false })
     this.handleInputChange = this.handleInputChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -35,7 +39,11 @@ class ReportList extends Component {
   handleSubmit (event) {
     event.preventDefault()
     this.setState({ isLoading: true })
-    fetch(`/report/${this.state.lat}/${this.state.long}?distance=${this.state.distance}`)
+    fetch(`/report/${this.state.lat}/${this.state.long}?distance=${this.state.distance}`, {
+      headers: {
+        'Authorization': `Bearer ${this.Auth.getToken()}`
+      }
+    })
       .then(response => response.json())
       .then(data => this.setState({ reports: data, isLoading: false }))
   }
@@ -121,4 +129,4 @@ class ReportList extends Component {
   }
 }
 
-export default ReportList
+export default withAuth(ReportList)
