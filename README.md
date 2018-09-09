@@ -1,4 +1,4 @@
-cPark Task
+parking system using nodejs, mongodb and docker
 =============
 
 #### to run app via docker-compose:
